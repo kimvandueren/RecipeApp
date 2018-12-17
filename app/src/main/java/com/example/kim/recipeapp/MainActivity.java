@@ -1,8 +1,5 @@
 package com.example.kim.recipeapp;
 
-import android.media.Image;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -12,18 +9,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView mRecipeImageView;
-    private TextView mRecipeTextView;
+    private static List<Recipe> mRecipes = new ArrayList<>();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -48,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mRecipeImageView = findViewById(R.id.imageView);
-        mRecipeTextView = findViewById(R.id.textView);
+        getData();
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -61,18 +63,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setmRecipeImageView(int recipeImage){
-        mRecipeImageView.setImageResource(recipeImage);
-    }
+    private void getData(){
+        RecipeApiService service = RecipeApiService.retrofit.create(RecipeApiService.class);
 
-    public void setmRecipeTextView(String recipeText){
-        mRecipeTextView.setText(recipeText);
+        retrofit2.Call<Recipe> call = service.getRecipe();
+        call.enqueue(new Callback<Recipe>() {
+            @Override
+            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                Recipe recipe = response.body();
+                mRecipes.add(recipe);
+            }
+
+            @Override
+            public void onFailure(Call<Recipe> call, Throwable t) {
+
+            }
+        });
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        ImageView imageView;
+        TextView textView;
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -98,8 +112,14 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+            TextView textView = (TextView) rootView.findViewById(R.id.textView);
+
+            textView.setText(mRecipes.get(getArguments().getInt(ARG_SECTION_NUMBER)).getTitle());
+            Glide.
+                    with(this)
+                    .load(mRecipes.get(getArguments().getInt(ARG_SECTION_NUMBER)).getImageUrl())
+                    .into(imageView);
             return rootView;
         }
     }

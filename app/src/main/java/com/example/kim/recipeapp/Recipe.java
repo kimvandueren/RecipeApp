@@ -34,6 +34,18 @@ public class Recipe {
     @Expose
     private String title;
 
+    public Recipe(String publisher, String f2fUrl, String title, String sourceUrl, String recipeId, String imageUrl, Double socialRank, String publisherUrl) {
+        super();
+        this.publisher = publisher;
+        this.f2fUrl = f2fUrl;
+        this.title = title;
+        this.sourceUrl = sourceUrl;
+        this.recipeId = recipeId;
+        this.imageUrl = imageUrl;
+        this.socialRank = socialRank;
+        this.publisherUrl = publisherUrl;
+    }
+
     public String getPublisher() {
         return publisher;
     }
