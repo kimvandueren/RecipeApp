@@ -12,9 +12,9 @@ public class Recipe {
     @SerializedName("f2f_url")
     @Expose
     private String f2fUrl;
-    @SerializedName("ingredients")
+    @SerializedName("title")
     @Expose
-    private List<String> ingredients = null;
+    private String title;
     @SerializedName("source_url")
     @Expose
     private String sourceUrl;
@@ -30,21 +30,6 @@ public class Recipe {
     @SerializedName("publisher_url")
     @Expose
     private String publisherUrl;
-    @SerializedName("title")
-    @Expose
-    private String title;
-
-    public Recipe(String publisher, String f2fUrl, String title, String sourceUrl, String recipeId, String imageUrl, Double socialRank, String publisherUrl) {
-        super();
-        this.publisher = publisher;
-        this.f2fUrl = f2fUrl;
-        this.title = title;
-        this.sourceUrl = sourceUrl;
-        this.recipeId = recipeId;
-        this.imageUrl = imageUrl;
-        this.socialRank = socialRank;
-        this.publisherUrl = publisherUrl;
-    }
 
     public String getPublisher() {
         return publisher;
@@ -62,12 +47,12 @@ public class Recipe {
         this.f2fUrl = f2fUrl;
     }
 
-    public List<String> getIngredients() {
-        return ingredients;
+    public String getTitle() {
+        return title;
     }
 
-    public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSourceUrl() {
@@ -108,14 +93,6 @@ public class Recipe {
 
     public void setPublisherUrl(String publisherUrl) {
         this.publisherUrl = publisherUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
 }

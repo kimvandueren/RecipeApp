@@ -66,16 +66,17 @@ public class MainActivity extends AppCompatActivity {
     private void getData(){
         RecipeApiService service = RecipeApiService.retrofit.create(RecipeApiService.class);
 
-        retrofit2.Call<Recipe> call = service.getRecipe();
-        call.enqueue(new Callback<Recipe>() {
+        retrofit2.Call<RecipeHolder> call = service.getRecipe();
+        call.enqueue(new Callback<RecipeHolder>() {
             @Override
-            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
-                Recipe recipe = response.body();
-                mRecipes.add(recipe);
+            public void onResponse(Call<RecipeHolder> call, Response<RecipeHolder> response) {
+                RecipeHolder recipe = response.body();
+                mRecipes = recipe.getRecipes();
+                mSectionsPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<Recipe> call, Throwable t) {
+            public void onFailure(Call<RecipeHolder> call, Throwable t) {
 
             }
         });
@@ -138,13 +139,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return mRecipes.size();
         }
     }
 }

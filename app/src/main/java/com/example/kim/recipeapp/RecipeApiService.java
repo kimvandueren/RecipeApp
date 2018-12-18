@@ -14,5 +14,5 @@ public interface RecipeApiService {
             .build();
 
     @GET("search?key=347637245029931a0d729e6efcb2f389&sort=r&count=3")
-    Call<Recipe> getRecipe();
+    Call<RecipeHolder> getRecipe();
 }
